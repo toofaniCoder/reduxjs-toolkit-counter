@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Container,
   Paper,
@@ -9,11 +8,18 @@ import {
 } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "./theme";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  increment,
+  decrement,
+  incrementBy,
+  decrementBy,
+} from "./redux/features/counterSlice";
 
 function App() {
-  const [counter, setCounter] = useState(0);
-  const increment = () => setCounter(counter + 1);
-  const decrement = () => setCounter(counter - 1);
+  const dispatch = useDispatch();
+  const counter = useSelector((state) => state.counter.counter);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -22,8 +28,14 @@ function App() {
           <Typography align="center" variant="h1">
             {counter}
           </Typography>
-          <Button onClick={increment}>Increment</Button>
-          <Button onClick={decrement}>Decrement</Button>
+          <Button onClick={() => dispatch(increment())}>Increment</Button>
+          <Button onClick={() => dispatch(decrement())}>Decrement</Button>
+          <Button onClick={() => dispatch(incrementBy(10))}>
+            Increment by 10
+          </Button>
+          <Button onClick={() => dispatch(decrementBy(5))}>
+            Decrement by 5
+          </Button>
         </Paper>
       </Container>
     </ThemeProvider>
